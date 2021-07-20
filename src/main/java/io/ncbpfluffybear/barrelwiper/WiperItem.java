@@ -1,5 +1,6 @@
 package io.ncbpfluffybear.barrelwiper;
 
+import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
@@ -9,6 +10,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -44,7 +46,10 @@ public class WiperItem extends SimpleSlimefunItem<ItemUseHandler> {
             }
 
             if (sfItem.getId().endsWith("FLUFFY_BARREL")) {
-                Bukkit.getPluginManager().callEvent(new BlockBreakEvent(b, e.getPlayer()));
+                ((HologramOwner) sfItem).removeHologram(b);
+                BlockStorage.clearBlockInfo(b);
+                b.setType(Material.AIR);
+                b.getWorld().dropItemNaturally(b.getLocation(), sfItem.getItem());
             }
         };
     }
